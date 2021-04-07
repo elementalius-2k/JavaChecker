@@ -1,0 +1,100 @@
+img.bgimg {
+  min-height: 100%;
+  min-width: 1980px;
+  width: 100%;
+  height: auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.89;
+}
+
+.fullpage{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	font-family: 'Proxima Nova Bold';
+	margin-top: 10%;
+}
+
+.name{
+}
+
+.name a{
+	font-size: 36px;
+}
+
+.name a:hover{
+}
+
+.main{
+	display: flex;
+	flex-direction: column;
+}
+
+.main a{
+	margin: 20px;
+	border: 1px #9AD9F5 solid;
+	border-radius: 5px;
+	padding: 15px 10px;
+	color: white;
+	font-size: 15px;
+	background-color: #d14351;
+	opacity: 0.76;
+	transition: 0.75s;
+}
+
+.main a:hover{
+	opacity: 1;
+	border-radius: 20px;
+	background-color: #2CDB89;
+}
+
+.butauth{
+	border-bottom: 1px #175fa8 solid;
+	color: black;
+	margin: 10px 5px;
+	font-family: 'Proxima Nova Bold';
+	font-size: 16px;
+}
+
+.butauth:hover{
+	border-bottom: 2px #d14351 solid;
+}
+
+.afrom{
+
+}
+
+.aform input{
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #d9d9d9;
+  text-align: center;
+}
+
+.forminput{
+	font-size: 14px;
+	color: #555;
+	height: 52px;
+	padding: 0 5px;
+	margin: 20px 0;
+}
+
+.forminput:focus::placeholder{
+  transform: translateY(-18px);
+  transition: 0.5s;
+}
+
+.aform input[type="submit"]{
+	border: 1px #175fa8 solid;
+	padding: 5px 10px;
+	background-color: #175fa8;
+	color: white;
+	transition: 0.35s;
+}
+
+.aform input[type="submit"]:hover{
+	border: 1px #d9d9d9 solid;
+	background-color: #d14351;
+}

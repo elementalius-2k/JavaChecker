@@ -1,0 +1,199 @@
+body{
+	background-color: #D8F0C9;
+	
+}
+
+.header{
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-top: 1.5%;
+	padding-bottom: 20px;
+	align-items: center;
+	border-bottom: 1px #CCC2BD solid;
+}
+
+.logo{
+	font-size: 26px;
+}
+
+.pagename{
+	text-align: center;
+}
+
+.exit{
+	display: flex;
+	flex-direction: column;
+}
+
+.exit a{
+	color: black;
+	font-size: 15px;
+	font-family: 'Proxima Nova Bold';
+	transition: 1s;
+}
+
+.exit i{
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  transition: 1s;
+}
+
+.exit a:hover{
+	color: #d14351;
+}
+
+.exit a:hover i{
+	color: #d14351;
+    -webkit-transform: rotateZ(360deg);
+	-ms-transform: rotateZ(360deg);
+	transform: rotateZ(360deg);
+}
+
+.fullpage{
+	font-family: 'Proxima Nova Regular';
+	display: flex;
+	justify-content: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.mainbox{
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.box{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	margin: 30px 0;
+	border-bottom: 2px #CCC2BD solid;
+	padding: 10px 0;
+}
+
+.box h2{
+	justify-content: center;
+	font-weight: bold;
+}
+
+.info{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin-bottom: 20px; 
+}
+
+.info a{
+	margin: 0 30px;
+	font-weight: bold;	
+	flex-basis: 10%;
+	text-align: center;
+	padding: 1%;
+	transition: 0.5s;
+	border: 0.5px #175fa8 solid;
+	color: white;
+	background-color: #175fa8;
+}
+
+.info a:hover{
+	border: 1px #d14351 solid;
+	background-color: #d14351;
+	border-radius: 15px;
+	font-size: 16px;
+	color: white;
+}
+
+.info p{
+	margin: 0 30px;
+	
+	flex-basis: 85%;
+}
+
+.newcform{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: center;
+  font-family: 'Proxima Nova Regular';
+}
+
+.newcform input, .newcform textarea{
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #d9d9d9;
+}
+
+
+.forminput, #desc{
+	font-size: 18px;
+	color: #555;
+	display: block;
+	height: 52px;
+	padding: 0 5px;
+	margin: 20px 0;
+}
+
+.forminput:focus::placeholder{
+  transform: translateY(-18px);
+  transition: 0.5s;
+}
+
+.newcform input[type=submit]{
+	outline: none;
+	background-color: #175fa8;
+	color: white;
+	margin: 2px 0;
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+#classnum, #metnum{
+	margin: 0 0 20px 0;
+}
+
+.vtform ul{
+	display: block;
+	text-align: left;
+}
+
+.vtform h3{
+	text-align: center;
+}
+
+.vtform input{
+	height: 52px;
+	color: #555;
+	outline: none;
+    border: none;
+    border-bottom: 2px solid #d9d9d9;
+}
+
+.vtform input:focus::placeholder{
+  transform: translateY(-18px);
+  transition: 0.5s;
+}
+
+.vtform li{
+	margin: 10px;
+	text-decoration: none;
+	list-style-type: none;
+	border-bottom: 0.75px #CCC2BD solid; 
+	padding-bottom: 5px;
+}
+
+.vtform input[type="submit"]{
+	border: 1px #175fa8 solid;
+	padding: 5px 10px;
+	background-color: #175fa8;
+	color: white;
+	transition: 0.35s;
+}
+
+.vtform input[type="submit"]:hover{
+	border: 1px #d9d9d9 solid;
+	background-color: #d14351;
+}
+
