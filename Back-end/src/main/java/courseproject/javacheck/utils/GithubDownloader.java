@@ -5,18 +5,15 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.UUID;
 
 @Component
 public class GithubDownloader {
+    private final static String path = "../JavaCheckerProjects";
 
-    private final static String path = "/gitDownloadForTaskChecker";
+    public GithubDownloader() {}
 
-    public GithubDownloader(){
-    }
-
-    public String download(String githubUrl) {
-        File file = new File(path + "/" + UUID.randomUUID());
+    public String download(String githubUrl, String name) {
+        File file = new File(path + "/" + name);
         try {
             Git.cloneRepository()
                     .setURI(githubUrl)
@@ -24,9 +21,9 @@ public class GithubDownloader {
                     .call();
         } catch (GitAPIException e) {
             e.printStackTrace();
-            return "";
+            return null;
         }
+
         return file.getAbsolutePath();
     }
-
 }

@@ -6,7 +6,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="entityManagerFactory" />
+          <factory-entry name="entityManagerFactory" value="eb0f3f3b-8075-4129-963a-1f691921d654" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
@@ -135,14 +135,14 @@
     <orderEntry type="library" name="Maven: org.bouncycastle:bcpg-jdk15on:1.61" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk15on:1.61" level="project" />
     <orderEntry type="library" name="Maven: org.bouncycastle:bcpkix-jdk15on:1.61" level="project" />
-    <orderEntry type="library" name="Maven: com.github.javaparser:javaparser-symbol-solver-core:3.20.0" level="project" />
-    <orderEntry type="library" name="Maven: com.github.javaparser:javaparser-core:3.20.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.javaparser:javaparser-symbol-solver-core:3.20.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.javaparser:javaparser-core:3.20.2" level="project" />
     <orderEntry type="library" name="Maven: org.javassist:javassist:3.27.0-GA" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:30.1-jre" level="project" />
+    <orderEntry type="library" name="Maven: com.google.guava:guava:30.1.1-jre" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:failureaccess:1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:3.0.2" level="project" />
-    <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.3.4" level="project" />
+    <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.5.1" level="project" />
     <orderEntry type="library" name="Maven: com.google.j2objc:j2objc-annotations:1.3" level="project" />
   </component>
 </module>
