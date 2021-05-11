@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../css/studcourse.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+  <link rel="stylesheet" href="../libs/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../libs/remodal/remodal.css">
+  <link rel="stylesheet" href="../libs/remodal/remodal-default-theme.css">
+</head>
+
+<title>Java Check</title>
+
+<body>
+
+  <div class="fullpage">
+    <div class="container">
+      <div class="col-md-12">
+
+        <div class="row">
+          <div class="header">
+            <div class="fullName-div"><span>Добро пожаловать</span>|<span id="fullName"/></div>
+            <div class="logo">
+              <a href="../index.html">Java Check</a>
+            </div>
+            <div class="exit">
+              <div class="remodal-bg"><a href="#addmodal"><i class="fa fa-plus" aria-hidden="true"></i>Добавить задание</a></div>
+              <a href="studentcourse.html"><i class="fa fa-arrow-left" aria-hidden="true"></i>Вернуться к курсам</a>
+            </div>  
+          </div>
+        </div>
+
+        <div class="mainbox">
+          <div class="pagename">
+            <h1>Таски</h1>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="remodal" data-remodal-id="addmodal">
+    <div class="aform newcform">
+      <h3>Создание задания</h3>
+      <input type="text" class="forminput" id="coursename" placeholder="Ваше название задания"> 
+      <textarea name=""  id="desc" cols="40" rows="4" placeholder="Ваше описание задания"></textarea> 
+      <label for="maxmark">Максимальная оценка</label>
+      <input type="number" id="maxmark" class="forminput" step="1" value="1" min="1">
+      <label for="classnum">Количество классов</label>
+      <input type="number" id="classnum" class="forminput" step="1" value="1" min="1">
+      <label for="metnum">Количество методов</label>
+      <input type="number" id="metnum" class="forminput" step="1" value="1" min="1">
+      <input type="submit" id="subbut" value="Готово">
+      <input type="submit" value="Отменить" data-remodal-action="close">
+      <br>
+    </div>
+  </div>
+
+  <div class="remodal" data-remodal-id="viewtask">
+    <div class="aform vtform">
+      <h3>Task#<span id="task_id0"></span> <span id="task_id"></span></h3>
+      <ul>
+        <li>Задача: <span id="task_id2"></span></li>
+        <li>Необходимо реализовать <span id="task_cl"></span> классов и <span id="task_mt"></span> методов</li>
+        <li>Ответ: <span id="work_id" hidden></span><span id="task_date"></span><span id="task_ans"></span></li>
+        <li>Отзыв системы: <span id="task_rep"></span></li>
+        <li>Отзыв преподавателя: <span id="task_mark"></span></li>
+        <li>Предоставить ответ: <input type="text" id="path" placeholder="Ссылка на источник"></li>
+      </ul>
+      <input type="submit" id="subbut_repo" value="Скачать отчет" class="btn" disabled>
+      <input type="submit" id="subbut_task" value="Готово">
+    </div>
+  </div>
+  
+<div id="auth-div"><h2><span id="auth-message"></span></div>
+
+<script src="../libs/jquery/jquery-3.4.1.min.js"></script>
+<script src="../libs/remodal/remodal.min.js"></script>
+
+</body>
+
+<script>
+  subbut_repo.onclick = async (e) => {
+    location.replace("http://localhost:8080/work/download/" + document.querySelector('#work_id').textContent);
+  };
+
+  subbut_task.onclick = async (e) => {
+    var retrievedObject = JSON.parse(localStorage.getItem('auth'));
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:8080/task/" + document.querySelector('#task_id0').textContent,
+      success: function(s){
+        let jsdata = {
+          "user": retrievedObject,
+          "task": s,
+          "path": document.querySelector('#path').value
+        };
+        $.ajax({
+          type: "POST",
+          url: "http://localhost:8080/work",
+          data: JSON.stringify(jsdata),
+          success: function(s){
+            alert('Успех!');
+            location.replace('tasks.html');
+          },
+          error: function(e){
+            alert('Провал!');
+            location.replace('tasks.html');
+          },
+          dataType: "json",
+          contentType : "application/json"
+        });
+      },
+      error: function(e){
+        alert('Провал!');
+        location.replace('tasks.html');
+      },
+      dataType: "json",
+      contentType : "application/json"
+    });
+  };
+  
+  subbut.onclick = async (e) => {
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:8080/subject/" + localStorage.getItem('id'),
+      success: function(s){
+        let jsdata = {
+          "name": document.querySelector("#coursename").value,
+          "text": document.querySelector("#desc").value,
+          "maxMark": parseInt(document.querySelector("#maxmark").value),
+          "classCount": parseInt(document.querySelector("#classnum").value),
+          "methodCount": parseInt(document.querySelector("#metnum").value),
+          "subject": s
+        };
+        $.ajax({
+          type: "POST",
+          url: "http://localhost:8080/task",
+          data: JSON.stringify(jsdata),
+          success: function(s){
+            alert('Успех!');
+            location.replace('tasks.html');
+          },
+          error: function(e){
+            alert('Провал!');
+            location.replace('tasks.html');
+          },
+          dataType: "json",
+          contentType : "application/json"
+        });
+      },
+      error: function(e){
+        alert('Провал!');
+        location.replace('tasks.html');
+      },
+      dataType: "json",
+      contentType : "application/json"
+    });
+  };
+  
+  $(document).ready(function(){
+    var retrievedObject = JSON.parse(localStorage.getItem('auth'));
+    if (retrievedObject == null) {
+      let divs = document.querySelectorAll("html body *:not(#auth-div, #auth-div *)");
+      for (var i = 0; i < divs.length; i++) {
+        divs[i].style.display = 'none';        
+      }
+      $('#auth-message').html("Вы не авторизованы! Повторите попытку");
+    }
+    $('#fullName').html(retrievedObject['fullName']);
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:8080/task/subject/" + localStorage.getItem('id'),
+      success: function(s){
+        s.forEach(function sel(curr){
+          let b = document.querySelector('.mainbox');
+
+          let d = document.createElement('div');
+          d.classList.add('box');
+
+          let name = document.createElement('h2');
+          name.innerText = curr['name'];
+
+          let i = document.createElement('div');
+          i.classList.add('info');
+
+          let p = document.createElement('p');
+          p.innerText = curr['text'];
+
+          let a = document.createElement('button');
+          a.type = 'button';
+          a.classList.add('btn');
+          a.classList.add('btn-primary');
+          a.addEventListener('click', function() {
+            $('#task_id0').text(curr['id']);
+            $('#task_id').text(curr['name']);
+            $('#task_id2').text(curr['text']);
+            $('#task_cl').text(curr['classCount']);
+            $('#task_mt').text(curr['methodCount']);
+            $('#task_ans').text('');
+            $('#task_rep').text('');
+            $('#task_mark').text('');
+            $('#work_id').text('');
+            $('#task_date').text('');
+            document.querySelector("#subbut_repo").disabled = true;
+            $.ajax({
+              type: "GET",
+              url: "http://localhost:8080/work/task/" + curr['id'] + "/user/" + retrievedObject["id"],
+              success: function(s){
+                if (s.length > 0) {
+                    $('#task_ans').text(s.slice(-1)[0]['path']);
+                    $('#task_rep').text(s.slice(-1)[0]['systemReview']);
+                    $('#task_mark').text(s.slice(-1)[0]['teacherReview']);
+                    $('#work_id').text(+s.slice(-1)[0]['id']);
+                    $('#task_date').text('['+s.slice(-1)[0]['dateTime'].slice(start=0,end=-1).join(separator='-')+']');
+                    document.querySelector("#subbut_repo").disabled = false;
+                }
+              },
+              dataType: "json",
+              contentType : "application/json"
+            });
+            location.replace('#viewtask');
+          }, false);
+          a.innerText = 'Подробнее';
+
+          i.appendChild(p);
+          i.appendChild(a);
+
+          d.appendChild(name);
+          d.appendChild(i);
+
+          b.appendChild(d);
+        });
+      },
+      dataType: "json",
+      contentType : "application/json"
+    });
+  });
+</script>

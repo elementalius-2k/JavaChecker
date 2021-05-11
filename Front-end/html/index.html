@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="libs/bootstrap/bootstrap-grid-3.3.1.min.css" />
+  <link rel="stylesheet" href="libs/remodal/remodal.css">
+  <link rel="stylesheet" href="libs/remodal/remodal-default-theme.css">
+</head>
+
+<title>Java Check</title>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="col">
+      <div class="row">
+        <div class="fullpage">
+          <div class="fullName-div"><span>Добро пожаловать</span>|<span id="fullName"/></div>
+          <div class="name"><a href="index.html">Java Check</a></div>
+            <div class="main">
+              <div class="remodal-bg"><a href="#modal">Авторизация</a></div>
+              <a href="pages/studentcourse.html">Перейти к курсам</a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="remodal" data-remodal-id="modal">
+    <div class="aform">
+      <h1>Вход</h1>Рады приветствовать Вас на нашем сервисе! У вас уже <a href="#modalsauth">есть аккаунт</a> или желаете <a href="#modalsreg">зарегистрироваться</a>?<br><br>
+      <a href="#modalsauth" class="butauth">Авторизация</a>
+      <a href="#modalsreg" class="butauth">Регистрация</a>
+    </div>    
+  </div>
+
+  <div class="remodal" data-remodal-id="modalsauth">
+    <div class="aform">
+      <h1>Авторизация</h1>
+      <p>У вас нет аккаунта? <a href="#modalsreg">Создайте</a> прямо сейчас!</p>
+      <input type="text" id="au_login" class="forminput" placeholder="Логин">
+      <input type="text" id="au_pass" class="forminput" placeholder="Пароль"><br>
+      <input type="submit" id="ausub"><br>
+    </div>
+  </div>
+
+  <div class="remodal" data-remodal-id="modalsreg">
+    <div class="aform">
+      <h1>Регистрация</h1>
+      <p>Уже есть аккаунт? <a href="#modalsauth">Авторизируйтесь</a> прямо сейчас!</p>
+      <label for="reg_isTeacher">Учитель?</label>
+      <input type="checkbox" id="reg_isTeacher">
+      <input type="text" id="reg_login" class="forminput" placeholder="Логин">
+      <input type="text" id="reg_password" class="forminput" placeholder="Пароль">
+      <input type="text" id="reg_fullName" class="forminput" placeholder="Имя">
+      <input type="text" id="reg_course" class="forminput" placeholder="Курс">
+      <input type="text" id="reg_groupNumber" class="forminput" placeholder="Группа">
+      <input type="submit" id="regsub"><br>
+    </div>
+  </div>
+
+<script src="libs/jquery/jquery-3.4.1.min.js"></script>
+<script src="libs/remodal/remodal.min.js"></script>
+
+</body>
+
+<script>
+  regsub.onclick = async (e) => {
+    let jsdata = {
+      "login": document.querySelector("#reg_login").value,
+      "password": document.querySelector("#reg_password").value,
+      "fullName": document.querySelector("#reg_fullName").value,
+      "course": parseInt(document.querySelector("#reg_course").value),
+      "groupNumber": parseInt(document.querySelector("#reg_groupNumber").value),
+      "teacher": document.querySelector("#reg_isTeacher").checked ? true : false,
+    };
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8080/user",
+      data: JSON.stringify(jsdata),
+      success: function(s){
+        jsdata['id'] = s['id'];
+        $.ajax({
+          type: "PUT",
+          url: "http://localhost:8080/user",
+          data: JSON.stringify(jsdata),
+          success: function(s){
+            if (s['result'] == 'success') {
+              alert('Успешная регистрация!');
+            } else {
+              alert('Ошибка регистрации!')
+            }
+            location.replace('index.html')
+          },
+          error: function(e){
+            alert('Ошибка регистрации!');
+            location.replace('index.html')
+          },
+          dataType: "json",
+          contentType : "application/json"
+        });
+      },
+      error: function(e){
+        alert('Ошибка регистрации!');
+        location.replace('index.html')
+      },
+      dataType: "json",
+      contentType : "application/json"
+    });
+  };
+
+  ausub.onclick = async (e) => {
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:8080/user/login/" + document.querySelector("#au_login").value + "/password/" + document.querySelector("#au_pass").value,
+      success: function(s){
+        alert('Успешная авторизация!');
+        localStorage.setItem('auth', JSON.stringify(s));
+        $('#fullName').html(s['fullName']);
+        location.replace('index.html')
+      },
+      error: function(e){
+        alert('Ошибка авторизации!');
+        location.replace('index.html')
+      },
+      dataType: "json",
+      contentType : "application/json"
+    });
+  };
+
+  $(document).ready(function(){
+    var retrievedObject = JSON.parse(localStorage.getItem('auth'));
+    if (retrievedObject != null) {
+      $('#fullName').html(retrievedObject['fullName']);
+    }
+  });
+</script>

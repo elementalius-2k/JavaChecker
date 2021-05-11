@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="../css/studcourse.css">
+  <link rel="stylesheet" href="../css/fonts.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+  <link rel="stylesheet" href="../libs/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../libs/remodal/remodal.css">
+  <link rel="stylesheet" href="../libs/remodal/remodal-default-theme.css">
+</head>
+
+<title>Java Check</title>
+
+<body>
+
+  <div class="fullpage">
+    <div class="container">
+      <div class="col-md-12">
+
+        <div class="row">
+          <div class="header">
+            <div class="fullName-div"><span>Добро пожаловать</span>|<span id="fullName"/></div>
+            <div class="logo">
+              <a href="../index.html">Java Check</a>
+            </div>
+            <div class="exit">
+              <div class="remodal-bg"><a href="#addmodal"><i class="fa fa-plus" aria-hidden="true"></i>Добавить курс</a></div>
+            </div>  
+          </div>
+        </div>
+
+        <div class="mainbox">
+          <div class="pagename">
+            <h1>Курсы</h1>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="remodal" data-remodal-id="addmodal">
+    <div class="aform newcform">
+      <h3>Создание курса</h3>
+      <input type="text" class="forminput" id="coursename" placeholder="Ваше название курса"> 
+      <textarea name="" id="desc" cols="40" rows="4" placeholder="Ваше описание курса"></textarea>
+      <input type="submit" id="subbut" value="Готово">
+      <input type="submit" value="Отменить" data-remodal-action="close">
+      <br>
+    </div>
+  </div>
+
+<div id="auth-div"><h2><span id="auth-message"></span></div>
+
+<script src="../libs/jquery/jquery-3.4.1.min.js"></script>
+<script src="../libs/remodal/remodal.min.js"></script>
+  
+</body>
+
+<script>
+  subbut.onclick = async (e) => {
+    var retrievedObject = JSON.parse(localStorage.getItem('auth'));
+    let jsdata = {
+      "name": document.querySelector("#coursename").value,
+      "description": document.querySelector("#desc").value,
+      "teacher": retrievedObject
+    };
+    $.ajax({
+      type: "POST",
+      url: "http://localhost:8080/subject",
+      data: JSON.stringify(jsdata),
+      success: function(s){
+        alert('Успех!');
+        location.replace('studentcourse.html');
+      },
+      error: function(e){
+        alert('Провал!');
+        location.replace('studentcourse.html');
+      },
+      dataType: "json",
+      contentType : "application/json"
+    });
+  };
+
+  $(document).ready(function(){
+    var retrievedObject = JSON.parse(localStorage.getItem('auth'));
+    if (retrievedObject == null) {
+      let divs = document.querySelectorAll("html body *:not(#auth-div, #auth-div *)");
+      for (var i = 0; i < divs.length; i++) {
+        divs[i].style.display = 'none';        
+      }
+      $('#auth-message').html("Вы не авторизованы! Повторите попытку");
+    }
+    $('#fullName').html(retrievedObject['fullName']);
+    $.ajax({
+      type: "GET",
+      url: "http://localhost:8080/subjects",
+      success: function(s){
+        s.forEach(function sel(curr){
+          let b = document.querySelector('.mainbox');
+
+          let d = document.createElement('div');
+          d.classList.add('box');
+
+          let name = document.createElement('h2');
+          name.innerText = curr['name'];
+
+          let i = document.createElement('div');
+          i.classList.add('info');
+
+          let p = document.createElement('p');
+          p.innerText = curr['description'];
+
+          let a = document.createElement('button');
+          a.type = 'button';
+          a.classList.add('btn');
+          a.classList.add('btn-primary');
+          a.addEventListener('click', function() {
+            localStorage.setItem('id', curr['id']);
+            location.replace('tasks.html');
+          }, false);
+          a.innerText = 'Подробнее';
+
+          i.appendChild(p);
+          i.appendChild(a);
+
+          d.appendChild(name);
+          d.appendChild(i);
+
+          b.appendChild(d);
+        });
+      },
+      dataType: "json",
+      contentType : "application/json"
+    });
+  });
+</script>
