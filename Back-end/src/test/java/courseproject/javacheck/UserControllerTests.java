@@ -1,9 +1,9 @@
 package courseproject.javacheck;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import courseproject.javacheck.controller.UserController;
-import courseproject.javacheck.domain.User;
-import courseproject.javacheck.service.impl.UserServiceImpl;
+import courseproject.javacheck.controllers.UserController;
+import courseproject.javacheck.model.postgresqlModels.User;
+import courseproject.javacheck.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;

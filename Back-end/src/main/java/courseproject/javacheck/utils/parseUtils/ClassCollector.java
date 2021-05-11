@@ -20,13 +20,12 @@ public class ClassCollector extends VoidVisitorAdapter<List<String>> {
 
         if (cid.isInterface())
             sb.append("\nInterface: ");
-        else {
-            if (cid.isInnerClass())
-                sb.append("\nInner class: ");
-            else
-                sb.append("\nClass: ");
-        }
-        sb.append(cid.getNameAsString());
+        else if (cid.isInnerClass())
+            sb.append("\nInner class: ");
+        else
+            sb.append("\nClass: ");
+
+        sb.append(cid.getFullyQualifiedName().orElse(cid.getNameAsString()));
 
         sb.append("\n\tModifiers:");
         NodeList<Modifier> classModifiers = cid.getModifiers();
@@ -48,7 +47,7 @@ public class ClassCollector extends VoidVisitorAdapter<List<String>> {
             vars.forEach(var -> {
                 sb.append("\n\t\t");
                 fieldModifiers.forEach(curr -> sb.append(curr.getKeyword()).append(" "));
-                sb.append(var.getType().asString()).append(" ").append(var.getName());
+                sb.append(var.getType().asString()).append(" ").append(var.getName().asString());
             });
         });
 

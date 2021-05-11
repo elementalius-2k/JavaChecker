@@ -1,12 +1,14 @@
 package courseproject.javacheck;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import courseproject.javacheck.controller.StudentWorkController;
-import courseproject.javacheck.domain.StudentWork;
-import courseproject.javacheck.domain.Subject;
-import courseproject.javacheck.domain.Task;
-import courseproject.javacheck.domain.User;
-import courseproject.javacheck.service.impl.StudentWorkServiceImpl;
+import courseproject.javacheck.controllers.StudentWorkController;
+import courseproject.javacheck.model.elasticsearchModels.Work;
+import courseproject.javacheck.model.postgresqlModels.StudentWork;
+import courseproject.javacheck.model.postgresqlModels.Subject;
+import courseproject.javacheck.model.postgresqlModels.Task;
+import courseproject.javacheck.model.postgresqlModels.User;
+import courseproject.javacheck.services.WorkService;
+import courseproject.javacheck.services.impl.StudentWorkServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +33,19 @@ public class StudentWorkControllerTests {
     private ObjectMapper objectMapper;
     @MockBean
     private StudentWorkServiceImpl studentWorkService;
+    @MockBean
+    private WorkService workService;
 
-    HashMap<String, String> success = new HashMap<String, String>() {{ put("result", "success"); }};
+    HashMap<String, String> success = new HashMap<>() {{
+        put("result", "success");
+    }};
 
     @Test
     void givenStudentWork_whenAdd_thenStudentWorkReturned() throws Exception {
         StudentWork studentWork = createStudentWork();
+        Work work = createWork(studentWork);
         Mockito.when(studentWorkService.createStudentWork(Mockito.any(StudentWork.class))).thenReturn(studentWork);
+        Mockito.when(workService.createWork(Mockito.any(StudentWork.class))).thenReturn(work);
         mockMvc.perform(post("/work")
                 .content(objectMapper.writeValueAsString(studentWork))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -118,9 +125,14 @@ public class StudentWorkControllerTests {
         Task task = new Task(subject,"name","desc",100,5,20);
         task.setId(1);
         StudentWork studentWork = new StudentWork(task, user,"path","rev","rev",
-                10,100,LocalDateTime.now(), "local path");
+                10,100,null, "local path");
         studentWork.setId(1);
         return studentWork;
+    }
+
+    private Work createWork(StudentWork studentWork) {
+        return new Work(studentWork.getId(), "full name", "report", "structure",
+                "all names", "local path");
     }
 
     private List<StudentWork> createTwoStudentWorks() {
@@ -131,10 +143,10 @@ public class StudentWorkControllerTests {
         Task task = new Task(subject,"name","desc",100,5,20);
         task.setId(1);
         StudentWork studentWork1 = new StudentWork(task, user,"path","rev","rev",
-                10,100, LocalDateTime.now(), "local path");
+                10,100,null, "local path");
         studentWork1.setId(1);
         StudentWork studentWork2 = new StudentWork(task, user,"path","rev","rev",
-                10,100,LocalDateTime.now(), "local path");
+                10,100,null, "local path");
         studentWork1.setId(2);
         return Arrays.asList(studentWork1, studentWork2);
     }
