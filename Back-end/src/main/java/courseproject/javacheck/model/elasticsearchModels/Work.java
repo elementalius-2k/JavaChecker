@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 
 /**
  * Class representing the student's work for internal checks
- * Not using for Front-end
+ * Using for front-end only to get report
  */
 @Document(indexName = "work_index")
 public class Work {
@@ -35,8 +35,6 @@ public class Work {
 
     @Field(type = FieldType.Text, name = "local_path")
     private String localPath;
-    
-    public Work() {}
     
     public Work(Integer workId, String fullName, String report, String structure, String allNames, String localPath) {
         this.workId = workId;

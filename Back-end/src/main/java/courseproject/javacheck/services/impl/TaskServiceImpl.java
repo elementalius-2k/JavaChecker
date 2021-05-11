@@ -35,7 +35,6 @@ public class TaskServiceImpl implements TaskService {
     public boolean updateTask(Task task) {
         try {
             taskRepo.findById(task.getId()).ifPresent(taskToChange -> {
-                taskToChange.setSubject(task.getSubject());
                 taskToChange.setName(task.getName());
                 taskToChange.setText(task.getText());
                 taskToChange.setMaxMark(task.getMaxMark());

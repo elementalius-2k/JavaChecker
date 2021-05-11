@@ -36,7 +36,6 @@ public class SubjectServiceImpl implements SubjectService {
     public boolean updateSubject(Subject subject) {
         try {
             subjectRepo.findById(subject.getId()).ifPresent(subjectToChange -> {
-                subjectToChange.setTeacher(subject.getTeacher());
                 subjectToChange.setName(subject.getName());
                 subjectToChange.setDescription(subject.getDescription());
                 subjectRepo.save(subjectToChange);

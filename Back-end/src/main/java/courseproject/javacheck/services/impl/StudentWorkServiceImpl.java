@@ -10,7 +10,6 @@ import courseproject.javacheck.services.StudentWorkService;
 import courseproject.javacheck.utils.GithubDownloader;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,20 +31,13 @@ public class StudentWorkServiceImpl implements StudentWorkService {
         try {
             studentWork.setTeacherReview(null);
             studentWork.setMark(null);
-            studentWork.setDateTime(LocalDateTime.now());
-
-            String workName = studentWork.getUser().getId() + "_" + studentWork.getTask().getId()
-                    + "_" + studentWork.getDateTime().toString().replaceAll("[:.]","-");
-            String localPath = downloadGithubRepository(studentWork.getPath(), workName);
-            if (localPath == null)
-                return null;
-            studentWork.setLocalPath(localPath);
-            studentWork.setSystemReview("preparing");
+            studentWork.setSystemReview("The work is checking. Report will be available later");
             studentWork.setOriginality(null);
 
             studentWorkRepo.save(studentWork);
             return studentWork;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -54,8 +46,6 @@ public class StudentWorkServiceImpl implements StudentWorkService {
     public boolean updateStudentWork(StudentWork studentWork) {
         try {
             studentWorkRepo.findById(studentWork.getId()).ifPresent(studentWorkToChange -> {
-                studentWorkToChange.setTask(studentWork.getTask());
-                studentWorkToChange.setUser(studentWork.getUser());
                 studentWorkToChange.setPath(studentWork.getPath());
                 studentWorkToChange.setSystemReview(studentWork.getSystemReview());
                 studentWorkToChange.setTeacherReview(studentWork.getTeacherReview());
@@ -66,6 +56,7 @@ public class StudentWorkServiceImpl implements StudentWorkService {
             });
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -77,6 +68,7 @@ public class StudentWorkServiceImpl implements StudentWorkService {
             curr.ifPresent(studentWorkRepo::delete);
             return true;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -116,7 +108,7 @@ public class StudentWorkServiceImpl implements StudentWorkService {
         return (List<StudentWork>) studentWorkRepo.findAll();
     }
 
-    private String downloadGithubRepository(String url, String name) {
+    public String downloadGithubRepository(String url, String name) {
         return GithubDownloader.download(url, name);
     }
 }

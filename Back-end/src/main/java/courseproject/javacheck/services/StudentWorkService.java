@@ -13,4 +13,5 @@ public interface StudentWorkService {
     List<StudentWork> getStudentWorksByUser(Integer userId);
     List<StudentWork> getStudentWorkByTask(Integer taskId);
     List<StudentWork> getAllStudentWorks();
+    String downloadGithubRepository(String url, String name);
 }

@@ -61,7 +61,7 @@ public class JavaProjectParser {
      * Parse java project represented by Work object
      * @return Parsed project represented by Work object
      */
-    public Work checkWork() {
+    public synchronized Work checkWork() {
         String folderPathString = work.getLocalPath();
 
         List<Path> allJavaFiles = FilesUtil.getAllJavaFiles(Paths.get(folderPathString));

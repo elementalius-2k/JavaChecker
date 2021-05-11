@@ -45,7 +45,7 @@ public class StudentWorkControllerTests {
         StudentWork studentWork = createStudentWork();
         Work work = createWork(studentWork);
         Mockito.when(studentWorkService.createStudentWork(Mockito.any(StudentWork.class))).thenReturn(studentWork);
-        Mockito.when(workService.createWork(Mockito.any(StudentWork.class))).thenReturn(work);
+        Mockito.when(workService.createWork(Mockito.any(Work.class))).thenReturn(work);
         mockMvc.perform(post("/work")
                 .content(objectMapper.writeValueAsString(studentWork))
                 .contentType(MediaType.APPLICATION_JSON))

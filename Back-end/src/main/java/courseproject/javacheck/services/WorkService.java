@@ -6,7 +6,7 @@ import courseproject.javacheck.model.postgresqlModels.StudentWork;
 import java.util.List;
 
 public interface WorkService {
-    Work createWork(StudentWork studentWork);
+    Work createWork(Work work);
     boolean updateWork(Work work);
     boolean deleteWork(String id);
     boolean deleteAllWorks();
@@ -14,4 +14,5 @@ public interface WorkService {
     Work getWorkByStudentWorkId(Integer id);
     List<Work> getAllWorks();
     List<String> getAllWorksNamesByNamesContains(String element);
+    Work checkProject(Work work);
 }

@@ -4,6 +4,7 @@ import courseproject.javacheck.model.postgresqlModels.StudentWork;
 import courseproject.javacheck.model.elasticsearchModels.Work;
 import courseproject.javacheck.services.StudentWorkService;
 import courseproject.javacheck.services.WorkService;
+import courseproject.javacheck.utils.executor.ParserExecutor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -32,19 +33,10 @@ public class StudentWorkController {
     }
 
     @PostMapping("/work")
-    public StudentWork addStudentWork(@RequestBody StudentWork studentWork) {
-        studentWork = studentWorkService.createStudentWork(studentWork);
-        Work work = workService.createWork(studentWork);
-        if (work != null) {
-            studentWork.setSystemReview("success");
-            studentWorkService.updateStudentWork(studentWork);
-            return studentWork;
-        }
-        else {
-            studentWork.setSystemReview("error");
-            studentWorkService.updateStudentWork(studentWork);
-            return null;
-        }
+    public HashMap<String, String> addStudentWork(@RequestBody StudentWork studentWork) {
+        ParserExecutor executor = ParserExecutor.getInstance(studentWorkService, workService);
+        executor.execute(studentWork);
+        return successAnswer;
     }
 
     @DeleteMapping("/works")
@@ -95,7 +87,14 @@ public class StudentWorkController {
 
     @GetMapping("/work/download/{id}")
     public ResponseEntity<Object> downloadFile(@PathVariable Integer id) {
-        String report = workService.getWorkByStudentWorkId(id).getReport();
+        String report;
+        Work work = workService.getWorkByStudentWorkId(id);
+        if (work == null)
+            report = "The work is checking. Report will be available later";
+        else
+            report = workService.getWorkByStudentWorkId(id).getReport();
+        if (report == null)
+            report = "The work is checking. Report will be available later";
 
         InputStreamResource resource = new InputStreamResource(new ByteArrayInputStream(report.getBytes()));
         HttpHeaders headers = new HttpHeaders();

@@ -1,6 +1,5 @@
 package courseproject.javacheck.services.impl;
 
-import courseproject.javacheck.model.postgresqlModels.StudentWork;
 import courseproject.javacheck.model.elasticsearchModels.Work;
 import courseproject.javacheck.repositories.elasticsearchRepos.WorkRepo;
 import courseproject.javacheck.services.WorkService;
@@ -19,14 +18,9 @@ public class WorkServiceImpl implements WorkService {
         this.workRepo = workRepo;
     }
 
-    public Work createWork(StudentWork studentWork) {
+    public Work createWork(Work work) {
         try {
-            String fullName = "User " + studentWork.getUser().getFullName() + "; Task " +
-                    studentWork.getTask().getName() + "; Upload at " + studentWork.getDateTime().toString();
-            Work work = new Work(studentWork.getId(), fullName,null,null,null, studentWork.getLocalPath());
-            work = checkProject(work);
-            workRepo.save(work);
-            return work;
+            return workRepo.save(work);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -90,7 +84,7 @@ public class WorkServiceImpl implements WorkService {
         return names;
     }
 
-    private Work checkProject(Work work) {
+    public Work checkProject(Work work) {
         JavaProjectParser parser = new JavaProjectParser(work,this);
         return parser.checkWork();
     }
